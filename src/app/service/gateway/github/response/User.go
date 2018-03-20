@@ -6,6 +6,6 @@ import (
 
 type User struct {
 	Profile resource.Profile `json:"profile"`
-	Repos []resource.Repo `json:"repos"`
-	Orgs []resource.Org `json:"orgs"`
+	Repos   []resource.Repo  `json:"repos"`
+	Orgs    []resource.Org   `json:"orgs"`
 }

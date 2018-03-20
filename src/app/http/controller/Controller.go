@@ -2,7 +2,7 @@ package controller
 
 var (
 	defaultController Default
-	gitHubController GitHub
+	gitHubController  GitHub
 )
 
 func Startup() {

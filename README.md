@@ -17,3 +17,41 @@ Run query:
 ````
 curl 'http://localhost:8080/github/users/cn007b'
 ````
+
+As result you'll see something like this:
+
+````
+{
+  "error": {
+    "code": 0,
+    "description": null,
+    "data": null
+  },
+  "success": {
+    "code": 200,
+    "data": {
+      "profile": {
+        "login": "cn007b",
+        "name": "Vladimir Kovpak",
+        "location": "Kiev, Ukraine"
+      },
+      "repos": [
+        {
+          "name": "api-gateway",
+          "full_name": "cn007b/api-gateway"
+        },
+        {
+          "name": "benchmark-postgres-mongo",
+          "full_name": "cn007b/benchmark-postgres-mongo"
+        }
+      ],
+      "orgs": [
+        {
+          "login": "thisiskint",
+          "description": ""
+        }
+      ]
+    }
+  }
+}
+````
