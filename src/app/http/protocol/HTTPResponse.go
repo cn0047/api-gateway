@@ -5,9 +5,9 @@ import (
 	"net/http"
 )
 
-// Canonical way to sends HTTP message response to client.
-func HttpResponse(w http.ResponseWriter, response HttpMessage) {
-	w.WriteHeader(getHttpCode(response))
+// HTTPResponse - Canonical way to sends HTTP message response to client.
+func HTTPResponse(w http.ResponseWriter, response HTTPMessage) {
+	w.WriteHeader(getHTTPCode(response))
 
 	err := json.NewEncoder(w).Encode(response)
 	if err != nil {
@@ -15,8 +15,8 @@ func HttpResponse(w http.ResponseWriter, response HttpMessage) {
 	}
 }
 
-// Gets HTTP status code from provided HttpMessage.
-func getHttpCode(response HttpMessage) int {
+// Gets HTTP status code from provided HTTPMessage.
+func getHTTPCode(response HTTPMessage) int {
 	var httpCode int
 
 	errorCode := response.GetError().Code

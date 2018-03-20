@@ -6,6 +6,7 @@ import (
 	"app/http/protocol"
 )
 
+// Default controller, which works as fallback end-point.
 type Default struct {
 }
 
@@ -14,6 +15,6 @@ func (d Default) registerRoutes() {
 }
 
 func (d Default) handleRequest(w http.ResponseWriter, r *http.Request) {
-	message := protocol.HttpError(501, "Not Implemented.")
-	protocol.HttpResponse(w, message)
+	message := protocol.HTTPError(501, "Not Implemented.")
+	protocol.HTTPResponse(w, message)
 }

@@ -5,6 +5,7 @@ var (
 	gitHubController  GitHub
 )
 
+// Startup - Init all routes for all controllers.
 func Startup() {
 	defaultController.registerRoutes()
 	gitHubController.registerRoutes()

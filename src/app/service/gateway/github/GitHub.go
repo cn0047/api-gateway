@@ -11,10 +11,10 @@ import (
 )
 
 const (
-	gitHubApiURL = "https://api.github.com/users/"
-);
+	gitHubAPIURL = "https://api.github.com/users/"
+)
 
-// Get from github information about user, user's repos and organizations.
+// GetUserInfo - Get from github information about user, user's repos and organizations.
 func GetUserInfo(userName string) response.User {
 	var user response.User
 	var wg sync.WaitGroup
@@ -42,7 +42,7 @@ func GetUserInfo(userName string) response.User {
 // This method only performs request and returns response body which intended to contain payload,
 // hence it's possible to use this method for any github API end-point.
 func getDataFromGitHub(endPoint string) []byte {
-	resp, err := http.Get(gitHubApiURL + endPoint)
+	resp, err := http.Get(gitHubAPIURL + endPoint)
 	if err != nil {
 		panic("RUNTIME-ERROR-GITHUB-API-1: " + err.Error())
 	}
