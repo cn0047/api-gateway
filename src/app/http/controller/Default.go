@@ -15,6 +15,6 @@ func (d Default) registerRoutes() {
 }
 
 func (d Default) handleRequest(w http.ResponseWriter, r *http.Request) {
-	message := protocol.HTTPError(501, "Not Implemented.")
-	protocol.HTTPResponse(w, message)
+	message := protocol.Error(501, "Not Implemented.")
+	protocol.Response(w, message)
 }

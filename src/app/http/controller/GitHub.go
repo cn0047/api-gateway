@@ -17,21 +17,17 @@ func (u GitHub) registerRoutes() {
 
 func (u GitHub) handleRequest(w http.ResponseWriter, r *http.Request) {
 	// Default HTTP message (Error 501).
-	message := protocol.HTTPError(501, "Not Implemented.")
-
-	defer func() {
-		protocol.HTTPResponse(w, message)
-	}()
-
-	// Regardless panic reply to client with correct HTTP message.
-	defer func() {
-		if err := recover(); err != nil {
-			message = protocol.HTTPException(err)
-		}
-	}()
+	message := protocol.Error(501, "Not Implemented.")
 
 	if r.Method == "GET" {
 		userName := r.URL.Path[len("/github/users/"):]
-		message = protocol.HTTPSuccess(200, github.GetUserInfo(userName))
+		data, err := github.GetUserInfo(userName)
+		if len(err) == 0 {
+			message = protocol.Success(200, data)
+		} else {
+			message = protocol.Exception(err)
+		}
 	}
+
+	protocol.Response(w, message)
 }
