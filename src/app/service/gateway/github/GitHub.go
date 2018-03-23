@@ -3,8 +3,8 @@ package github
 import (
 	"sync"
 
+	"app/service/gateway/externalapi"
 	"app/service/gateway/github/resource"
-	"app/service/gateway/externalAPI"
 )
 
 const (
@@ -37,7 +37,7 @@ func GetUserInfo(userName string) (map[string]interface{}, map[string]interface{
 		data := payload[key]
 		go func() {
 			defer wg.Done()
-			err := externalAPI.TakeData(endPoint, &data)
+			err := externalapi.TakeData(endPoint, &data)
 			if err == nil {
 				payload[key] = data
 			} else {
