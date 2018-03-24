@@ -1,10 +1,7 @@
 package externalapi
 
 import (
-	"encoding/json"
-	"errors"
-	"io/ioutil"
-	"net/http"
+	"github.com/cnkint/curl"
 	"time"
 )
 
@@ -17,27 +14,5 @@ const (
 // than unmarshal JSON and assigns payload to provided pointer.
 // It's possible to use this method for any external JSON REST API.
 func TakeData(URI string, p interface{}) error {
-	client := http.Client{Timeout: time.Millisecond * timeout}
-
-	resp, err := client.Get(URI)
-	if err != nil {
-		return err
-	}
-	defer resp.Body.Close()
-
-	if resp.StatusCode != 200 {
-		return errors.New(resp.Status)
-	}
-
-	body, err := ioutil.ReadAll(resp.Body)
-	if err != nil {
-		return err
-	}
-
-	err = json.Unmarshal(body, p)
-	if err != nil {
-		return err
-	}
-
-	return nil
+	return curl.Unmarshal(curl.Options{URL: URI, Timeout: time.Millisecond * timeout}, p)
 }
