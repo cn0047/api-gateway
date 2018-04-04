@@ -3,8 +3,8 @@ package controller
 import (
 	"net/http"
 
-	"app/http/protocol"
-	"app/service/gateway/github"
+	"app/protocol"
+	"app/service/github"
 )
 
 // GitHub controller, which contains all stuff related to github end-point.

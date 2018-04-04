@@ -3,7 +3,7 @@ package main
 import (
 	"net/http"
 
-	"app/http/controller"
+	"app/controller"
 )
 
 func main() {

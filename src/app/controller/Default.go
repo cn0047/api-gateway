@@ -3,7 +3,7 @@ package controller
 import (
 	"net/http"
 
-	"app/http/protocol"
+	"app/protocol"
 )
 
 // Default controller, which works as fallback end-point.

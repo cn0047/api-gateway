@@ -1,14 +1,23 @@
 package github
 
 import (
+	"encoding/json"
+	"errors"
+	"io/ioutil"
+	"net/http"
 	"sync"
+	"time"
 
-	"app/service/gateway/externalapi"
-	"app/service/gateway/github/resource"
+	"app/service/github/resource"
 )
 
 const (
 	gitHubAPI = "https://api.github.com/users/"
+	timeout   = 10000 // milliseconds
+)
+
+var (
+	httpClient = http.Client{Timeout: time.Millisecond * timeout}
 )
 
 // GetUserInfo - Get from github information about user, user's repos and organizations.
@@ -37,7 +46,7 @@ func GetUserInfo(userName string) (map[string]interface{}, map[string]interface{
 		data := payload[key]
 		go func() {
 			defer wg.Done()
-			err := externalapi.TakeData(endPoint, &data)
+			err := takeData(endPoint, &data)
 			if err == nil {
 				payload[key] = data
 			} else {
@@ -49,4 +58,29 @@ func GetUserInfo(userName string) (map[string]interface{}, map[string]interface{
 	wg.Wait()
 
 	return payload, e
+}
+
+// takeData gets data from github API.
+func takeData(URI string, p interface{}) error {
+	resp, err := httpClient.Get(URI)
+	if err != nil {
+		return err
+	}
+	defer resp.Body.Close()
+
+	if resp.StatusCode != 200 {
+		return errors.New(resp.Status)
+	}
+
+	body, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return err
+	}
+
+	err = json.Unmarshal(body, p)
+	if err != nil {
+		return err
+	}
+
+	return nil
 }
