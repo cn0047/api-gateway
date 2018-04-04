@@ -1,9 +1,8 @@
 machine:
   environment:
     GOROOT: ""
-    GOPATH: "${HOME}/.go_project"
-    PATH: "${GOPATH}/bin:${PATH}"
-    BUILD_PATH: "${GOPATH}/src/github.com/cn007b/api-gateway"
+    GOPATH: $HOME/.go_project
+    PATH: $PATH:$HOME/.go_workspace/bin
 
 dependencies:
   pre:
