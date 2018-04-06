@@ -1,15 +1,14 @@
-machine:
-  environment:
-    GOROOT: ""
-    GOPATH: $HOME/.go_project
-    PATH: $PATH:$HOME/.go_workspace/bin
+version: 2
 
-dependencies:
-  pre:
-    - go get golang.org/x/lint/golint
+jobs:
+  build:
+    docker:
+      - image: circleci/golang:1.9
 
-test:
-  pre:
-    - cd $BUILD_PATH && go vet ./...
-  override:
-    - cd $BUILD_PATH && godep go test -v ./...
+    working_directory: /go/src/github.com/cn007b/api-gateway
+
+    steps:
+      - checkout
+
+#      - run: go get -v -t -d ./...
+#      - run: go test -v ./...
