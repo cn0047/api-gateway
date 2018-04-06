@@ -1,6 +1,7 @@
 API Gateway
 -
 
+[![CircleCI](https://circleci.com/gh/cn007b/api-gateway.svg?style=svg)](https://circleci.com/gh/cn007b/api-gateway)
 [![Go Report Card](https://goreportcard.com/badge/github.com/cn007b/api-gateway)](https://goreportcard.com/report/github.com/cn007b/api-gateway)
 [![Codacy Badge](https://api.codacy.com/project/badge/Grade/a75fd2bff6ae4365b6535126ff429621)](https://www.codacy.com/app/cn007b/api-gateway?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=cn007b/api-gateway&amp;utm_campaign=Badge_Grade)
 [![Maintainability](https://api.codeclimate.com/v1/badges/89a5bcee77752ad8a6ec/maintainability)](https://codeclimate.com/github/cn007b/api-gateway/maintainability)
