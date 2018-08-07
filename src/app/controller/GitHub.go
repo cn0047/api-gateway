@@ -2,8 +2,8 @@ package controller
 
 import (
 	"net/http"
+	"github.com/thepkg/rest"
 
-	"app/protocol"
 	"app/service/github"
 )
 
@@ -12,22 +12,15 @@ type GitHub struct {
 }
 
 func (u GitHub) registerRoutes() {
-	http.HandleFunc("/github/users/", u.handleRequest)
+	rest.GET("/github/users/", u.handleRequest)
 }
 
 func (u GitHub) handleRequest(w http.ResponseWriter, r *http.Request) {
-	// Default HTTP message (Error 501).
-	message := protocol.Error(501, "Not Implemented.")
-
-	if r.Method == "GET" {
-		userName := r.URL.Path[len("/github/users/"):]
-		data, err := github.GetUserInfo(userName)
-		if len(err) == 0 {
-			message = protocol.Success(200, data)
-		} else {
-			message = protocol.Exception(err)
-		}
+	userName := r.URL.Path[len("/github/users/"):]
+	data, err := github.GetUserInfo(userName)
+	if len(err) == 0 {
+		rest.Success(w,http.StatusOK, data)
+	} else {
+		rest.Error(w, http.StatusBadRequest, err)
 	}
-
-	protocol.Response(w, message)
 }

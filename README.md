@@ -11,21 +11,23 @@ This is super simple `API Gateway` for `github`
 
 ## Usage
 
-Run `docker` container:
+Run in shell next command:
 
-````
-docker run -it --rm -p 8080:8080 -v $PWD:/app -w /app -e GOPATH='/app' golang:latest go run src/app/main.go
+````bash
+go run src/app/main.go
+# or
+go run -race src/app/main.go
 ````
 
 Run query:
 
-````
+````bash
 curl 'http://localhost:8080/github/users/cn007b'
 ````
 
 As result you'll see something like this:
 
-````
+````json
 {
   "error": {
     "code": 0,

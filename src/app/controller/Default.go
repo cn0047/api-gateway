@@ -2,8 +2,7 @@ package controller
 
 import (
 	"net/http"
-
-	"app/protocol"
+	"github.com/thepkg/rest"
 )
 
 // Default controller, which works as fallback end-point.
@@ -11,10 +10,9 @@ type Default struct {
 }
 
 func (d Default) registerRoutes() {
-	http.HandleFunc("/", d.handleRequest)
+	rest.GET("/", d.handleRequest)
 }
 
 func (d Default) handleRequest(w http.ResponseWriter, r *http.Request) {
-	message := protocol.Error(501, "Not Implemented.")
-	protocol.Response(w, message)
+	rest.Error(w, http.StatusNotImplemented, "Not Implemented.")
 }
