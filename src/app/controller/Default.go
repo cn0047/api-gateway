@@ -1,15 +1,16 @@
 package controller
 
 import (
-	"net/http"
 	"github.com/thepkg/rest"
+	"net/http"
 )
 
 // Default controller, which works as fallback end-point.
 type Default struct {
 }
 
-func (d Default) registerRoutes() {
+// RegisterRoutes registers HTTP routes handlers.
+func (d Default) RegisterRoutes() {
 	rest.GET("/", d.handleRequest)
 }
 

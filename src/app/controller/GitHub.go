@@ -1,8 +1,8 @@
 package controller
 
 import (
-	"net/http"
 	"github.com/thepkg/rest"
+	"net/http"
 
 	"app/service/github"
 )
@@ -11,16 +11,13 @@ import (
 type GitHub struct {
 }
 
-func (u GitHub) registerRoutes() {
+// RegisterRoutes registers HTTP routes handlers.
+func (u GitHub) RegisterRoutes() {
 	rest.GET("/github/users/", u.handleRequest)
 }
 
 func (u GitHub) handleRequest(w http.ResponseWriter, r *http.Request) {
 	userName := r.URL.Path[len("/github/users/"):]
-	data, err := github.GetUserInfo(userName)
-	if len(err) == 0 {
-		rest.Success(w,http.StatusOK, data)
-	} else {
-		rest.Error(w, http.StatusBadRequest, err)
-	}
+	data := github.GetUserInfo(userName)
+	rest.Success(w, http.StatusOK, data)
 }

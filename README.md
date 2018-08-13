@@ -29,35 +29,36 @@ As result you'll see something like this:
 
 ````json
 {
-  "error": {
-    "code": 0,
-    "description": null,
-    "data": null
-  },
+  "error": null,
   "success": {
     "code": 200,
     "data": {
-      "profile": {
-        "login": "cn007b",
-        "name": "Vladimir Kovpak",
-        "location": "Kiev, Ukraine"
+      "orgs": {
+        "data": [
+          {
+            "login": "thepkg",
+            "description": "Go Packages."
+          }
+        ],
+        "error": null
       },
-      "repos": [
-        {
-          "name": "api-gateway",
-          "full_name": "cn007b/api-gateway"
+      "profile": {
+        "data": {
+          "login": "cn007b",
+          "name": "Vladimir Kovpak",
+          "location": "Kyiv, Ukraine"
         },
-        {
-          "name": "benchmark-postgres-mongo",
-          "full_name": "cn007b/benchmark-postgres-mongo"
-        }
-      ],
-      "orgs": [
-        {
-          "login": "thisiskint",
-          "description": ""
-        }
-      ]
+        "error": null
+      },
+      "repos": {
+        "data": [
+          {
+            "name": "api-gateway",
+            "full_name": "cn007b/api-gateway"
+          }
+        ],
+        "error": null
+      }
     }
   }
 }

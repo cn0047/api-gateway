@@ -1,86 +1,55 @@
 package github
 
 import (
-	"encoding/json"
-	"errors"
-	"io/ioutil"
-	"net/http"
 	"sync"
-	"time"
 
-	"app/service/github/resource"
-)
-
-const (
-	gitHubAPI = "https://api.github.com/users/"
-	timeout   = 10000 // milliseconds
-)
-
-var (
-	httpClient = http.Client{Timeout: time.Millisecond * timeout}
+	"app/service/github/payload"
+	"app/service/github/request"
+	"app/service/github/response"
 )
 
 // GetUserInfo - Get from github information about user, user's repos and organizations.
-func GetUserInfo(userName string) (map[string]interface{}, map[string]interface{}) {
-	// Errors map.
-	e := make(map[string]interface{})
+func GetUserInfo(userName string) response.Default {
+	n := 3
+	jobs := make(chan request.Job, n)
+	results := make(chan request.Job, n)
+	wg := sync.WaitGroup{}
+	wg.Add(n)
 
-	// Result payload map. Contains structures which will be populated by data from github.
-	payload := make(map[string]interface{})
-	payload["profile"] = &resource.Profile{}
-	payload["repos"] = &[]resource.Repo{}
-	payload["orgs"] = &[]resource.Org{}
-
-	// Map: payload key to end-point suffix.
-	m := make(map[string]string)
-	m["profile"] = ""
-	m["repos"] = "/repos"
-	m["orgs"] = "/orgs"
-
-	var wg sync.WaitGroup
-	wg.Add(len(payload))
-
-	for k, suffix := range m {
-		key := k
-		endPoint := gitHubAPI + userName + suffix
-		data := payload[key]
-		go func() {
-			defer wg.Done()
-			err := takeData(endPoint, &data)
-			if err == nil {
-				payload[key] = data
-			} else {
-				e[key] = err.Error()
-			}
-		}()
+	for i := 0; i < n; i++ {
+		go fulfillJob(jobs, results, &wg)
 	}
-
+	createJobs(jobs, userName)
 	wg.Wait()
+	close(results)
 
-	return payload, e
+	return prepareResponse(results)
 }
 
-// takeData gets data from github API.
-func takeData(URI string, p interface{}) error {
-	resp, err := httpClient.Get(URI)
-	if err != nil {
-		return err
-	}
-	defer resp.Body.Close()
+func createJobs(jobs chan<- request.Job, userName string) {
+	jobs <- request.GetProfileJob(userName)
+	jobs <- request.GetOrgsJob(userName)
+	jobs <- request.GetReposJob(userName)
+	close(jobs)
+}
 
-	if resp.StatusCode != 200 {
-		return errors.New(resp.Status)
+func fulfillJob(jobs <-chan request.Job, results chan<- request.Job, wg *sync.WaitGroup) {
+	for job := range jobs {
+		job.Error = UnmarshalData(GetURI(job.UserName, job.Name), &job.Data)
+		results <- job
+		wg.Done()
+	}
+}
+
+func prepareResponse(results <-chan request.Job) response.Default {
+	res := response.Default{}
+	for result := range results {
+		err := ""
+		if result.Error != nil {
+			err = result.Error.Error()
+		}
+		res[result.Name] = payload.Default{Data: result.Data, Error: err}
 	}
 
-	body, err := ioutil.ReadAll(resp.Body)
-	if err != nil {
-		return err
-	}
-
-	err = json.Unmarshal(body, p)
-	if err != nil {
-		return err
-	}
-
-	return nil
+	return res
 }
