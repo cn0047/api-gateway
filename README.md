@@ -63,3 +63,6 @@ As result you'll see something like this:
   }
 }
 ````
+
+This document is combined object which contains data received from next github endpoints: orgs, profile and repos.
+<br>All requests to github performed in parallel style with purpose to reach the best performance.
